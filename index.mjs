@@ -1,10 +1,14 @@
-import { createServer } from 'node:http';
+import { createServer } from 'node:https';
 import fs from 'node:fs';
 
-const hostname = '0.0.0.0';
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/ismailarilik.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/ismailarilik.com/fullchain.pem'),
+};
+
 const port = 80;
 
-const server = createServer((req, res) => {
+const server = createServer(options, (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
 
@@ -17,6 +21,6 @@ const server = createServer((req, res) => {
   });
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(443, () => {
+  console.log('Server running');
 });
